@@ -1,3 +1,65 @@
+
+---
+
+# Repository Architecture
+
+```mermaid
+flowchart TD
+
+    %% ========================
+    %% Infrastructure Setup
+    %% ========================
+    A[AddUsers.ps1<br>Create AD Test Users]
+    B[UserSim_MasterBootstrap.ps1<br>Initialize Simulation Framework]
+    C[Install-AtomicRedTeam-Multi.ps1<br>Install Atomic Red Team]
+
+    %% ========================
+    %% Identity Configuration
+    %% ========================
+    D[Lab-ROPC-Activator<br>Entra ID Enterprise App]
+
+    %% ========================
+    %% Windows User Simulation
+    %% ========================
+    E[Master_Playwright_Taskcreator2.ps1<br>Create Scheduled Tasks]
+    F[Start-AllPlaywrightTasks-And-Summarize.ps1<br>Execute Simulation]
+
+    %% ========================
+    %% External Simulation
+    %% ========================
+    G[Kali Linux Environment]
+    H[OfficeLoginScript.ps1<br>Automated Login]
+    I[m365-outlook-flow.spec.ts<br>Mailbox Interaction]
+    J[Tor + Proxychains Routing]
+
+    %% ========================
+    %% Adversarial Activity
+    %% ========================
+    K[Run-AtomicCampaign.ps1<br>Execute Techniques]
+
+    %% ========================
+    %% Defender Response
+    %% ========================
+    L[Defender Telemetry + Detection]
+    M[Attack Disruption Containment]
+    N[User Accounts Disabled]
+
+    %% ========================
+    %% Optional Deployment
+    %% ========================
+    O[Deploy-AtomicCampaign-MASTER.ps1<br>Optional Campaign Deployment]
+
+    %% ========================
+    %% Flow Relationships
+    %% ========================
+
+    A --> B --> C --> D --> E --> F
+    F --> K
+    G --> J --> H --> I --> L
+    K --> L --> M --> N
+
+    O -. optional .-> K
+```
 # Autonomous Defense Induced Disruption Lab
 
 Hybrid enterprise lab environment for researching **Autonomous Defense Induced Disruption (ADID)**.  
@@ -210,3 +272,5 @@ You may not need the following depending on deployment method:
 All other files are part of the core execution chain.
 
 ---
+
+
