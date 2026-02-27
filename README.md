@@ -273,4 +273,73 @@ All other files are part of the core execution chain.
 
 ---
 
+---
 
+# Research Methodology
+
+```mermaid
+flowchart TD
+
+    %% =====================================
+    %% ENVIRONMENT CONSTRUCTION
+    %% =====================================
+    A[Build Microsoft Enterprise Lab<br>Hyper-V + AD + Windows Clients]
+    B[Replace Default Domain<br>Rejoin All Systems]
+    C[Create Test Users<br>AddUsers.ps1]
+    D[Hybrid Identity Configuration<br>Azure AD Connect + M365 E5]
+    E[Onboard Endpoints to Defender XDR]
+
+    %% =====================================
+    %% BASELINE TELEMETRY GENERATION
+    %% =====================================
+    F[Initialize User Simulation Framework<br>UserSim_MasterBootstrap.ps1]
+    G[Internal User Activity Simulation<br>Playwright Scheduled Tasks]
+
+    %% =====================================
+    %% EXTERNAL IDENTITY SIGNAL GENERATION
+    %% =====================================
+    H[Kali Linux Attacker Environment]
+    I[Proxy-Routed Authentication Activity<br>Tor + Proxychains]
+    J[Automated Mailbox Interaction<br>Playwright]
+
+    %% =====================================
+    %% ADVERSARIAL BEHAVIOR SIMULATION
+    %% =====================================
+    K[Deploy Atomic Red Team]
+    L[Execute Technique Campaigns<br>Run-AtomicCampaign.ps1]
+
+    %% =====================================
+    %% DEFENSIVE RESPONSE
+    %% =====================================
+    M[Defender Telemetry Correlation]
+    N[Risk Escalation Across Identity + Endpoint]
+    O[Attack Disruption Decision Engine]
+    P[Automated Containment Action]
+
+    %% =====================================
+    %% EXPERIMENTAL OBSERVATION
+    %% =====================================
+    Q[User Accounts Disabled]
+    R[Operational Impact Observed]
+
+    %% =====================================
+    %% ANALYSIS
+    %% =====================================
+    S[Document Detection Chain]
+    T[Analyze Trigger Conditions]
+    U[Identify Autonomous Defense Induced Disruption]
+
+    %% =====================================
+    %% FLOW
+    %% =====================================
+
+    A --> B --> C --> D --> E
+    E --> F --> G
+    G --> M
+
+    H --> I --> J --> M
+    K --> L --> M
+
+    M --> N --> O --> P --> Q --> R
+    R --> S --> T --> U
+```
