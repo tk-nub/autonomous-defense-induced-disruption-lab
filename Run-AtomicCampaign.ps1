@@ -1,3 +1,23 @@
+# ============================================================
+# Script: Atomic Red Team Campaign Runner (Lab)
+#
+# Description:
+# Executes a repeatable Atomic Red Team test campaign against a
+# specified list of MITRE ATT&CK technique IDs. The script
+# creates a timestamped results directory, records a campaign
+# marker for later correlation, captures best-effort Defender
+# status and relevant Windows event logs, and saves per-technique
+# execution output.
+#
+# At completion, all artifacts (logs, transcripts, exports, and
+# command output) are compressed into a single ZIP file under the
+# results root for easy collection and analysis.
+#
+# Intended Use:
+# Controlled lab and research environments only. Not for
+# production use.
+# ============================================================
+
 param(
   [string]$ResultsRoot = "C:\AtomicRedTeam\Results",
   [string]$AtomicRepo  = "C:\AtomicRedTeam\atomic-red-team",
@@ -76,4 +96,5 @@ catch {
 }
 finally {
   Stop-Transcript | Out-Null
+
 }
