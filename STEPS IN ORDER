@@ -1,0 +1,282 @@
+
+Step02_UserSim_MasterBootstrap.ps1
+Step03_Install-AtomicRedTeam-Multi.ps1
+Step04_Run-Playwright.ps1
+Step05_Start-AllPlaywrightTasks-And-Summarize.ps1
+Step06_Run-AtomicCampaign.ps1
+
+
+
+This is recommended but not required.
+
+---
+
+# PHASE 1 — Build Microsoft Enterprise Lab (Hyper-V)
+
+### Goal
+Create baseline hybrid enterprise infrastructure.
+
+### Steps
+1. Enable Hyper-V on Windows 11 host.
+2. Follow Microsoft Enterprise Deployment Lab documentation (provided separately).
+3. Import all virtual machines.
+4. Verify domain controller and clients start successfully.
+
+### Result
+Working on-prem enterprise environment.
+
+---
+
+# PHASE 2 — Replace Default Lab Domain
+
+### Goal
+Convert lab to use your personal domain.
+
+### Steps
+1. Rename Active Directory domain on DC.
+2. Allow replication to complete.
+3. Re-join all Windows 11 clients to new domain.
+4. Validate authentication.
+
+### Result
+All systems joined to your custom domain.
+
+---
+
+# PHASE 3 — Create Test Users
+
+### File Used Step01_AddUsers.ps1
+
+### Purpose
+Populate lab with realistic user population.
+
+### Run On
+Domain Controller (or RSAT workstation)
+
+### Execute
+```powershell
+.\AddUsers.ps1
+
+### Result
+Large pool of test identities.
+
+---
+
+# PHASE 4 — Initialize User Simulation Framework
+### File Used UserSim_MasterBootstrap.ps1
+
+### Purpose
+
+Prepare environment for large-scale user activity simulation.
+
+### Execute
+.\UserSim_MasterBootstrap.ps1
+
+###Result
+User simulation infrastructure staged.
+
+---
+
+# ============================================================
+# PHASE 5 — Configure Microsoft 365 E5 + Hybrid Identity
+# ============================================================
+
+## Goal
+Connect on-prem Active Directory to Microsoft 365 and enable hybrid identity.
+
+## Steps
+1. Start a Microsoft 365 E5 trial for your domain.
+2. Configure required DNS records for domain verification and mail routing.
+3. Install Azure AD Connect on the domain controller.
+4. Configure directory synchronization.
+5. Assign licenses to all test users.
+6. Validate:
+   - User sign-in to M365 portal
+   - Mailbox functionality
+   - Hybrid identity sync status
+
+## Result
+Users exist both on-prem and in Entra ID with working authentication and email.
+
+
+# ============================================================
+# PHASE 6 — Configure Defender Attack Disruption Prerequisites
+# ============================================================
+
+## Goal
+Enable Microsoft Defender XDR services required for automated containment.
+
+## Steps
+1. Enable Defender XDR components in the Microsoft security portal.
+2. Configure required security features for identity and endpoint monitoring.
+3. Verify devices and users are reporting telemetry.
+4. Confirm Attack Disruption prerequisites are satisfied.
+
+## Result
+Defender is capable of initiating automated containment actions.
+
+
+# ============================================================
+# PHASE 7 — Onboard Windows 11 Test Machines to Defender
+# ============================================================
+
+## Devices
+- CLIENT1
+- CLIENT2
+- CLIENT3
+- CLIENT4
+
+## Steps
+1. Deploy Defender onboarding package to each device.
+2. Confirm device health status in Defender portal.
+3. Verify telemetry ingestion.
+
+## Result
+All test endpoints are monitored by Defender XDR.
+
+
+# ============================================================
+# PHASE 8 — Install Atomic Red Team Across Endpoints
+# ============================================================
+
+## Script Used
+Install-AtomicRedTeam-Multi.ps1
+
+## Execute
+```powershell
+.\Install-AtomicRedTeam-Multi.ps1
+
+##Result
+All endpoints can execute MITRE ATT&CK techniques.
+
+# ============================================================
+# PHASE 9 — Configure Automation-Friendly Authentication (Lab Only)
+# ============================================================
+
+## Objective
+Allow automated authentication for test users so simulation scripts can perform sign-in activity without interactive prompts.
+
+This configuration is required for large-scale scripted user activity in the lab.
+
+## Configuration Used
+- Enterprise Application: **Lab-ROPC-Activator**
+- Entra ID application setup file included in this repository:
+  - `Entra ID App Setup (Lab-ROPC-Activator)`
+
+## Steps
+1. Create the enterprise application **Lab-ROPC-Activator** in Entra ID.
+2. Assign all test users to the application.
+3. Apply a lab-only authentication policy exception that allows automated sign-in for those users.
+
+## Result
+Test users can authenticate programmatically for simulation workflows.
+
+---
+
+# ============================================================
+# PHASE 10 — Execute Windows-Based User Activity Simulation
+# ============================================================
+
+## Objective
+Generate realistic browser-based user behavior across all Windows test endpoints.
+
+This produces authentication, session, and interaction telemetry.
+
+## Scripts Used
+- `Master_Playwright_Taskcreator2.ps1`
+- `Run-Playwright.ps1`
+- `Start-AllPlaywrightTasks-And-Summarize.ps1`
+
+## Step 1 — Create scheduled user simulation tasks
+Run from a management host or directly on target endpoints:
+
+```powershell
+.\Master_Playwright_Taskcreator2.ps1
+```
+
+## Result
+Automated browser sessions run across multiple endpoints, generating identity and activity telemetry at scale.
+
+---
+
+# PHASE 11 — Kali Linux External Activity Simulation
+
+## Objective
+Simulate authentication and mailbox activity from external proxy-routed locations.
+
+## Files Used
+- `Routing Playwright Through Tor`
+- `OfficeLoginScript.ps1`
+- `m365-outlook-flow.spec.ts`
+
+## Kali Linux Setup
+
+Install:
+- Playwright
+- Tor
+- proxychains
+- PowerShell (`pwsh`)
+
+## Execute Proxy-Routed Authentication Simulation
+
+```bash
+proxychains4 pwsh -File OfficeLoginScript.ps1
+```
+
+## Result
+Authentication activity appears from proxy-routed external IP addresses, increasing identity risk signals in the lab.
+
+---
+
+# PHASE 12 — Execute Atomic Technique Campaigns
+
+## Objective
+Generate controlled adversarial telemetry across endpoints.
+
+## Script Used
+- `Run-AtomicCampaign.ps1`
+
+## Execution Method
+
+Log into each Windows 11 test machine as each test user and run:
+
+```powershell
+.\Run-AtomicCampaign.ps1
+```
+
+## Result
+Atomic Red Team techniques execute and generate endpoint and identity telemetry.
+
+**Observed research outcome:**  
+Microsoft Defender Attack Disruption automatically disabled user accounts under simulated high-confidence conditions.
+
+---
+
+# PHASE 13 — Optional Campaign Deployment Automation
+
+## Script
+- `Deploy-AtomicCampaign-MASTER.ps1`
+
+## Purpose
+Automates staging or deployment of campaign configuration across endpoints.
+
+## When To Use
+Use only if centralized campaign deployment is required.
+
+If deployment is manual, this script is not necessary.
+
+---
+
+# FINAL LAB STATE
+
+After completing all phases, the lab includes:
+
+- Hybrid enterprise identity infrastructure  
+- Defender XDR telemetry across endpoints  
+- Automated internal user activity simulation  
+- Proxy-routed external authentication activity  
+- Atomic technique execution across endpoints  
+- Autonomous containment triggered by Defender  
+
+**Research Observation:**  
+Microsoft Defender Attack Disruption disabled user accounts automatically during simulated high-risk activity.
