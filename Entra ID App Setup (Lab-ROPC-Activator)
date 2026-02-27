@@ -1,0 +1,115 @@
+## Entra ID App Setup (Lab-ROPC-Activator) — **LAB ONLY**
+
+> ⚠️ **Security warning:** This configuration enables **ROPC (username/password token flow)**, which is high-risk and commonly abused in real environments.  
+> Use **only** in an isolated lab / test tenant with throwaway accounts. Do **not** enable this in production.
+
+### What this app is for
+This app allows a script to request OAuth tokens using `grant_type=password` (ROPC) and then call Microsoft Graph as the user (delegated permissions).
+
+---
+
+## 1) Create the App Registration
+
+1. Go to **Microsoft Entra admin center** → **Identity** → **Applications** → **App registrations**  
+2. Click **New registration**
+3. Set:
+   - **Name:** `Lab-ROPC-Activator`
+   - **Supported account types:** *Accounts in this organizational directory only (Single tenant)*
+   - **Redirect URI:** *(leave blank)*
+4. Click **Register**
+5. Copy and save:
+   - **Application (client) ID**
+   - **Directory (tenant) ID**
+
+---
+
+## 2) Enable ROPC (Public Client Flow)
+
+1. In the App Registration: **Authentication**
+2. Under **Advanced settings**:
+   - Enable **Allow public client flows** = **Yes**
+3. Click **Save**
+
+> This is the key setting that permits username/password token exchange without a client secret.
+
+---
+
+## 3) Add Microsoft Graph Permissions (Delegated)
+
+1. App Registration → **API permissions** → **Add a permission**
+2. Choose **Microsoft Graph**
+3. Select **Delegated permissions**
+4. Add the minimum needed for your script:
+
+- For basic identity lookup (`GET /me`):
+  - `User.Read`
+
+- For group membership enumeration (`POST /me/getMemberObjects`):
+  - `GroupMember.Read.All` *(or `Directory.Read.All` if you intentionally need broad directory reads — avoid if not required)*
+
+5. Click **Add permissions**
+6. If required, click **Grant admin consent** (Global Admin may be needed)
+
+> Principle: **least privilege** — add only what your test actually requires.
+
+---
+
+## 4) Create / Verify the Enterprise Application (Service Principal)
+
+After registration, Entra will create a corresponding **Enterprise application** automatically.
+
+1. Go to **Enterprise applications**
+2. Search for `Lab-ROPC-Activator`
+3. Open it and confirm:
+   - **Enabled for users to sign-in:** `Yes`
+
+---
+
+## 5) Restrict Who Can Use It (Strongly Recommended)
+
+### Option A (Recommended): Require Assignment
+1. Enterprise applications → `Lab-ROPC-Activator` → **Properties**
+2. Set **Assignment required?** = **Yes**
+3. **Users and groups** → add a **test-only** security group (e.g., `Lab-ROPC-Users`)
+4. Put only your lab personas in that group
+
+This prevents every tenant user from authenticating via this app.
+
+### Option B: Add Conditional Access (If Available)
+Create a CA policy targeting this Enterprise App to enforce constraints like:
+- allowed locations (lab IPs only)
+- device compliance (lab devices only)
+- block legacy auth where applicable
+- limit sign-in risk (if available in your tenant)
+
+---
+
+## 6) Validate It Works (No Secrets Needed)
+
+Use a token request (ROPC) with:
+- tenant ID
+- client ID
+- username/password
+- Graph scopes
+
+If the app is configured correctly, Entra will issue an access token and your Graph calls will succeed.
+
+---
+
+## 7) Cleanup / Shutdown When Done
+
+After testing, disable the attack surface:
+
+- Enterprise application → **Enabled for users to sign-in** = **No**
+- Or App Registration → **Delete**
+- Remove the delegated permissions / revoke admin consent
+
+---
+
+## Notes / Common Failure Causes
+
+- **ROPC disabled** → “public client flows” not enabled
+- **MFA enforced** → ROPC often fails when MFA is required
+- **Missing delegated permissions** → Graph calls fail (403)
+- **Admin consent not granted** → permission errors
+- **Assignment required = Yes** but user not assigned → sign-in blocked
