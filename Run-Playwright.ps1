@@ -1,4 +1,29 @@
-﻿param(
+# ============================================================
+# Script: Playwright Portal Automation Runner
+#
+# Description:
+# Executes automated Playwright browser workflows for portal
+# authentication and interaction using supplied credentials.
+# The script prepares the runtime environment, validates Node.js
+# and Playwright dependencies, installs required browsers, and
+# ensures network readiness before execution.
+#
+# Designed for controlled lab environments to generate
+# realistic user authentication activity and web interaction
+# telemetry for hybrid enterprise security testing.
+#
+# Features:
+# - Shared Playwright browser cache for consistency
+# - Dependency validation and installation
+# - Network and DNS readiness checks
+# - Execution logging and success tracking
+# - Concurrency locking to prevent overlapping runs
+#
+# Intended for research and lab simulation only.
+# Not for production use.
+# ============================================================
+ 
+ param(
   [Parameter(Mandatory=$true)][string]$PortalUrl,
   [Parameter(Mandatory=$true)][string]$Username,
   [Parameter(Mandatory=$true)][string]$Password
@@ -128,6 +153,7 @@ finally {
   try { Pop-Location } catch {}
   try { if ($lockHandle) { $lockHandle.Close(); $lockHandle.Dispose() } } catch {}
 }
+
 
 
 
