@@ -142,11 +142,11 @@ It is not intended for production deployment.
 
 # Repository File Map
 
-This section explains what each file in the repository does and **when it is used** during lab setup and execution.
+This repository is organized by functional role to support reproducibility and clarity.
 
 ---
 
-## Root Structure
+## Folder Structure
 
 ```
 /autonomous-defense-induced-disruption-lab
@@ -154,112 +154,123 @@ This section explains what each file in the repository does and **when it is use
 ├── README.md
 ├── LICENSE
 │
-├── AddUsers.ps1
-├── UserSim_MasterBootstrap.ps1
-├── Install-AtomicRedTeam-Multi.ps1
+├── scripts/
+│   ├── AddUsers.ps1
+│   ├── UserSim_MasterBootstrap.ps1
+│   ├── Install-AtomicRedTeam-Multi.ps1
+│   ├── Master_Playwright_Taskcreator2.ps1
+│   ├── Run-Playwright.ps1
+│   ├── Start-AllPlaywrightTasks-And-Summarize.ps1
+│   ├── Run-AtomicCampaign.ps1
+│   ├── Deploy-AtomicCampaign-MASTER.ps1 (optional)
+│   └── Entra-ID-App-Setup-Lab-ROPC-Activator.ps1
 │
-├── Master_Playwright_Taskcreator2.ps1
-├── Run-Playwright.ps1
-├── Start-AllPlaywrightTasks-And-Summarize.ps1
+├── playwright/
+│   └── m365-outlook-flow.spec.ts
 │
-├── OfficeLoginScript.ps1
-├── m365-outlook-flow.spec.ts
-├── Routing Playwright Through Tor (documentation)
+├── attacker/
+│   ├── OfficeLoginScript.ps1
+│   └── Routing-Playwright-Through-Tor.md
 │
-├── Run-AtomicCampaign.ps1
-├── Deploy-AtomicCampaign-MASTER.ps1
+├── artifacts/
+│   └── opw2uvbyv8on4idnrirebi5h7.docx
 │
-└── Entra ID App Setup (Lab-ROPC-Activator)
+└── docs/
+    └── supporting documentation
 ```
 
 ---
 
-## File Descriptions and Usage Order
+## Folder Purpose
 
-### Infrastructure Preparation
+### scripts/
+Windows-based lab automation and execution logic.
 
-**AddUsers.ps1**  
-Creates randomized Active Directory test users.  
-Used after domain setup and before user simulation.
-
-**UserSim_MasterBootstrap.ps1**  
-Initializes the user simulation environment and supporting structure.  
-Run once before launching any simulation activity.
+These scripts run inside the hybrid enterprise environment and generate telemetry used for research observation.
 
 ---
 
-### Endpoint Preparation
+### playwright/
+Browser automation workflows executed by simulation systems.
 
-**Install-AtomicRedTeam-Multi.ps1**  
-Installs Atomic Red Team across Windows test endpoints.  
-Required before running technique campaigns.
-
----
-
-### Windows User Activity Simulation
-
-**Master_Playwright_Taskcreator2.ps1**  
-Creates scheduled tasks for large-scale Playwright user activity.
-
-**Run-Playwright.ps1**  
-Executes browser automation workflows for simulated users.
-
-**Start-AllPlaywrightTasks-And-Summarize.ps1**  
-Starts simulation across all endpoints and collects execution status.
+Defines user interaction behavior inside Microsoft 365 services.
 
 ---
 
-### External (Kali Linux) Activity Simulation
+### attacker/
+External simulation components executed from Kali Linux or other non-domain systems.
 
-**OfficeLoginScript.ps1**  
-Automates Microsoft 365 authentication from external systems.
+Used to generate proxy-routed authentication and mailbox activity.
 
-**m365-outlook-flow.spec.ts**  
-Playwright workflow for mailbox access and interaction.
+---
 
-**Routing Playwright Through Tor (documentation)**  
-Instructions for routing automation traffic through Tor / proxychains.
+### artifacts/
+Research artifacts and payloads used during simulation activity.
+
+Not required for infrastructure setup but used during experiments.
+
+---
+
+### docs/
+Human-readable documentation, setup notes, and reference material.
+
+---
+
+## Execution Flow by Folder
+
+### Infrastructure and Environment Preparation
+```
+scripts/AddUsers.ps1
+scripts/UserSim_MasterBootstrap.ps1
+scripts/Install-AtomicRedTeam-Multi.ps1
+scripts/Entra-ID-App-Setup-Lab-ROPC-Activator.ps1
+```
+
+---
+
+### Windows User Simulation
+```
+scripts/Master_Playwright_Taskcreator2.ps1
+scripts/Run-Playwright.ps1
+scripts/Start-AllPlaywrightTasks-And-Summarize.ps1
+```
+
+---
+
+### External Activity Simulation (Kali Linux)
+```
+attacker/OfficeLoginScript.ps1
+playwright/m365-outlook-flow.spec.ts
+attacker/Routing-Playwright-Through-Tor.md
+```
 
 ---
 
 ### Adversarial Technique Execution
+```
+scripts/Run-AtomicCampaign.ps1
+```
 
-**Run-AtomicCampaign.ps1**  
-Executes selected Atomic Red Team techniques and collects telemetry.  
-Run while logged in as each test user.
-
----
-
-### Optional Deployment Automation
-
-**Deploy-AtomicCampaign-MASTER.ps1**  
-Automates distribution of campaign configuration across endpoints.  
-Optional — only needed for centralized deployment.
+Optional automated deployment:
+```
+scripts/Deploy-AtomicCampaign-MASTER.ps1
+```
 
 ---
 
-### Identity Configuration
+## Execution Order Summary
 
-**Entra ID App Setup (Lab-ROPC-Activator)**  
-Enterprise application configuration enabling automated authentication for lab users.
-
----
-
-## Execution Flow Summary
-
-Recommended operational order:
-
-1. AddUsers.ps1  
-2. UserSim_MasterBootstrap.ps1  
-3. Install-AtomicRedTeam-Multi.ps1  
-4. Configure Entra ID App (Lab-ROPC-Activator)  
-5. Master_Playwright_Taskcreator2.ps1  
-6. Start-AllPlaywrightTasks-And-Summarize.ps1  
-7. OfficeLoginScript.ps1 (from Kali via proxychains)  
-8. Run-AtomicCampaign.ps1  
+1. scripts/AddUsers.ps1  
+2. scripts/UserSim_MasterBootstrap.ps1  
+3. scripts/Install-AtomicRedTeam-Multi.ps1  
+4. Configure Entra ID App  
+5. scripts/Master_Playwright_Taskcreator2.ps1  
+6. scripts/Start-AllPlaywrightTasks-And-Summarize.ps1  
+7. attacker/OfficeLoginScript.ps1 (via proxychains)  
+8. scripts/Run-AtomicCampaign.ps1  
 
 Optional:
-- Deploy-AtomicCampaign-MASTER.ps1
+- scripts/Deploy-AtomicCampaign-MASTER.ps1
 
 ---
 
