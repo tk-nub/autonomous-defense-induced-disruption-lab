@@ -1,11 +1,26 @@
-﻿# ==============================
+# ============================================================
+# Script: AddUsers
+#
+# Description:
+# Automatically generates randomized Active Directory user
+# accounts to populate a lab environment with realistic
+# identities. Supports hybrid enterprise simulation and
+# security research scenarios that require multiple user
+# objects for authentication, telemetry, and behavioral testing.
+#
+# Intended for controlled lab environments only.
+# Uses a shared default password for simplicity.
+# Not suitable for production use.
+# ============================================================
+ 
+# ==============================
 # CONFIGURATION
 # ==============================
 
 $NumberOfUsers = 15
-$Domain        = "kidsreadingroad.com"
-$OU            = "CN=Users,DC=KidsReadingRoad,DC=com"
-$DefaultPass   = "P@ssw0rd123!" | ConvertTo-SecureString -AsPlainText -Force
+$Domain        = "<insertdoamin>"
+$OU            = "CN=Users,DC=<>,DC=<>"
+$DefaultPass   = "P@ssw0rd123!" | ConvertTo-SecureString -AsPlainText -Force   # Plain text because this is a lab
 
 # ==============================
 # NAME LISTS (US-Common)
@@ -58,3 +73,4 @@ for ($i = 1; $i -le $NumberOfUsers; $i++) {
 }
 
 Write-Host "`n✅ $NumberOfUsers test users created successfully."
+
