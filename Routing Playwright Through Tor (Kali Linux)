@@ -1,0 +1,216 @@
+# 🌐 Routing Playwright Traffic Through Tor (Kali Linux)
+
+This project supports routing Playwright browser automation through the Tor network to simulate distributed external traffic and vary source IP telemetry during testing.
+
+All browser traffic is routed through Tor’s local SOCKS proxy.
+
+Tested on **Kali Linux Rolling**.
+
+---
+
+## 📦 Prerequisites
+
+- Kali Linux
+- Node.js ≥ 18
+- npm
+- Internet connectivity
+- sudo privileges
+
+---
+
+## ⚙️ 1. Install Dependencies
+
+### Update system
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### Install Node.js and npm
+```bash
+sudo apt install nodejs npm -y
+```
+
+Verify:
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 🎭 2. Install Playwright
+
+Inside your project directory:
+
+```bash
+npm init -y
+npm install playwright
+npx playwright install
+```
+
+---
+
+## 🧅 3. Install and Start Tor
+
+```bash
+sudo apt install tor -y
+sudo systemctl enable tor
+sudo systemctl start tor
+```
+
+Verify:
+```bash
+sudo systemctl status tor
+```
+
+Tor SOCKS proxy:
+```
+127.0.0.1:9050
+```
+
+Confirm listener:
+```bash
+ss -lntp | grep 9050
+```
+
+---
+
+## 🔍 4. Verify Tor Connectivity
+
+Normal IP:
+```bash
+curl https://api.ipify.org
+```
+
+Tor IP:
+```bash
+curl --socks5 127.0.0.1:9050 https://api.ipify.org
+```
+
+IPs should differ.
+
+Optional:
+```bash
+curl --socks5 127.0.0.1:9050 https://check.torproject.org
+```
+
+---
+
+## 🧪 5. Configure Playwright to Use Tor
+
+Create a test script:
+
+```javascript
+const { chromium } = require("playwright");
+
+(async () => {
+
+  const browser = await chromium.launch({
+    proxy: {
+      server: "socks5h://127.0.0.1:9050"
+    },
+    headless: false
+  });
+
+  const page = await browser.newPage();
+
+  await page.goto("https://check.torproject.org", {
+    waitUntil: "networkidle",
+    timeout: 120000
+  });
+
+})();
+```
+
+Run:
+```bash
+node test.js
+```
+
+If configured correctly, the page will confirm Tor usage.
+
+---
+
+## 🔐 Prevent DNS Leaks (Recommended)
+
+Use:
+
+```
+socks5h://127.0.0.1:9050
+```
+
+The `h` ensures hostname resolution occurs through Tor.
+
+---
+
+## 🔄 Rotate Tor Exit Node (Optional)
+
+```bash
+sudo kill -HUP $(pgrep tor)
+```
+
+---
+
+## 🧰 Alternative: proxychains (System-Wide Routing)
+
+Install:
+```bash
+sudo apt install proxychains4
+```
+
+Edit config:
+```bash
+sudo nano /etc/proxychains4.conf
+```
+
+Ensure:
+```
+dynamic_chain
+socks5 127.0.0.1 9050
+```
+
+Run:
+```bash
+proxychains4 node test.js
+```
+
+Native Playwright proxy configuration is recommended.
+
+---
+
+## ⚠️ Known Limitations
+
+- Some sites block Tor exit nodes
+- Higher latency
+- Tor ≠ Tor Browser fingerprint
+- Automation may still be detectable
+
+---
+
+## 🧪 Use Case
+
+- simulate distributed user traffic
+- vary source IP telemetry
+- test detection systems
+- generate external browsing activity in lab environments
+
+---
+
+## 🛠 Troubleshooting
+
+Restart Tor:
+```bash
+sudo systemctl restart tor
+```
+
+Manual proxy test:
+```bash
+curl --socks5 127.0.0.1:9050 https://google.com
+```
+
+---
+
+## 📄 License / Usage Notice
+
+For research and controlled lab environments only.  
+Do not deploy in production without authorization.
