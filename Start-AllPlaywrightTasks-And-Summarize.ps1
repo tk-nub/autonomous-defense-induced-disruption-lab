@@ -1,4 +1,22 @@
-﻿<# 
+# ============================================================
+# ADID Lab - Distributed User Simulation Orchestrator
+#
+# Description:
+# Coordinates execution of scheduled Playwright campaign tasks
+# across multiple lab endpoints to generate synchronized user
+# activity and authentication telemetry. The script remotely
+# starts campaign tasks, monitors execution state, and provides
+# a consolidated summary of completion status and log output.
+#
+# This supports hybrid enterprise simulation and Autonomous
+# Defense Induced Disruption (ADID) research by enabling
+# controlled, repeatable identity activity across multiple
+# systems.
+#
+# Lab use only — not intended for production environments.
+# ============================================================
+ 
+ <# 
 Start-AllPlaywrightTasks-And-Summarize.ps1
 Run from ADMIN machine.
 
@@ -140,3 +158,4 @@ $sum = foreach ($c in $Computers) {
 }
 
 $sum | Select-Object Computer, Watched, Completed, TimedOut, LatestLog, LastSuccess, TaskResults, Note | Format-List
+
