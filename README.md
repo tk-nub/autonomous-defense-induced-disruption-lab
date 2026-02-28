@@ -354,3 +354,55 @@ flowchart TD
     M --> N --> O --> P --> Q --> R
     R --> S --> T --> U
 ```
+```mermaid
+flowchart TD
+  %% ============================
+  %% ADID Trigger Threshold Model
+  %% Observable gates from exports
+  %% ============================
+
+  A[Telemetry Inputs\n(What Defender Sees)] --> B{Identity Risk Signals?\n(Precursor Alerts)}
+  A --> C{Endpoint HOK Signals?\n(Precursor Alerts)}
+
+  %% Identity precursors
+  B -->|Yes| B1[Identity precursors\n- Anonymous IP / risky sign-in\n- Suspicious sign-in properties\n- Account risk indicators]
+  B -->|No| B0[No identity precursors\n(lower likelihood of ADID trigger)]
+
+  %% Endpoint precursors
+  C -->|Yes| C1[Endpoint precursors\n- Suspicious PowerShell / cmd.exe\n- Credential theft tooling signals\n- Human-operated activity patterns\n- Multi-device activity indicators]
+  C -->|No| C0[No endpoint precursors\n(lower likelihood of ADID trigger)]
+
+  %% Correlation and incident formation
+  B1 --> D[Cross-domain correlation\n(User + Device + Signals)]
+  C1 --> D
+
+  D --> E{Incident Classification Gate\n("Attack Disruption" incident family?)}
+
+  %% Threshold boundary
+  E -->|Yes| F[THRESHOLD MET (Observable)\nHigh severity incident + Attack Disruption tag\nKnown attack pattern / HOK compromise family]
+  E -->|No| G[Threshold NOT met\nIncident may exist but not Attack Disruption-labeled]
+
+  %% Automated enforcement
+  F --> H[Automated Actions Execute\n(Seconds–Minutes after incident creation)]
+  H --> H1[Identity enforcement\n- Disable user\n- Require sign-in again\n- Suspend user]
+  H --> H2[Endpoint enforcement\n- Contain user/device\n- Additional containment actions]
+
+  %% Propagation
+  H --> I{Propagation Scope}
+  I --> J[All correlated entities\nacross hybrid identity + endpoints]
+  J --> K[Outcome: Enterprise authentication denial\n(Scale irrelevant; impact = 100% of workforce if all users affected)]
+
+  %% Key thesis point
+  K --> L[Key Finding\nEnforcement is detection-pattern-gated,\nnot volume-gated (users/alerts)\nand not context-aware (role criticality)]
+
+  %% Privilege/authority note
+  L --> M[Critical Risk Escalation\nNo inherent protection for authority hierarchy\n(privileged accounts can be disabled)\n→ Control-plane denial possible]
+
+  %% Notes for readers
+  subgraph Notes[What this model DOES / DOES NOT claim]
+    N1[DOES claim:\n- Observable gate = Attack Disruption-labeled\n  high-severity incident classification\n- Precursors = identity risk + HOK endpoint signals\n- Actions occur immediately after incident creation\n- Scope propagates to correlated entities]
+    N2[DOES NOT claim:\n- Microsoft's internal confidence score\n- Exact numeric thresholds\n- Proprietary model decision logic]
+  end
+
+  M --> Notes
+```
