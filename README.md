@@ -1,3 +1,7 @@
+# Autonomous Defense Induced Disruption Lab
+
+Hybrid enterprise lab environment for researching **Autonomous Defense Induced Disruption (ADID)**.  
+This repository provides infrastructure build scripts and step-by-step instructions for recreating a hybrid enterprise environment used to study AI-driven autonomous containment behavior.
 
 ---
 
@@ -6,64 +10,35 @@
 ```mermaid
 flowchart TD
 
-    %% ========================
-    %% Infrastructure Setup
-    %% ========================
-    A[AddUsers.ps1<br>Create AD Test Users]
-    B[UserSim_MasterBootstrap.ps1<br>Initialize Simulation Framework]
-    C[Install-AtomicRedTeam-Multi.ps1<br>Install Atomic Red Team]
+A[AddUsers.ps1 - Create AD Test Users]
+B[UserSim_MasterBootstrap.ps1 - Initialize Simulation Framework]
+C[Install-AtomicRedTeam-Multi.ps1 - Install Atomic Red Team]
 
-    %% ========================
-    %% Identity Configuration
-    %% ========================
-    D[Lab-ROPC-Activator<br>Entra ID Enterprise App]
+D[Lab-ROPC-Activator - Entra ID Enterprise App]
 
-    %% ========================
-    %% Windows User Simulation
-    %% ========================
-    E[Master_Playwright_Taskcreator2.ps1<br>Create Scheduled Tasks]
-    F[Start-AllPlaywrightTasks-And-Summarize.ps1<br>Execute Simulation]
+E[Master_Playwright_Taskcreator2.ps1 - Create Scheduled Tasks]
+F[Start-AllPlaywrightTasks-And-Summarize.ps1 - Execute Simulation]
 
-    %% ========================
-    %% External Simulation
-    %% ========================
-    G[Kali Linux Environment]
-    H[OfficeLoginScript.ps1<br>Automated Login]
-    I[m365-outlook-flow.spec.ts<br>Mailbox Interaction]
-    J[Tor + Proxychains Routing]
+G[Kali Linux Environment]
+H[OfficeLoginScript.ps1 - Automated Login]
+I[m365-outlook-flow.spec.ts - Mailbox Interaction]
+J[Tor and Proxychains Routing]
 
-    %% ========================
-    %% Adversarial Activity
-    %% ========================
-    K[Run-AtomicCampaign.ps1<br>Execute Techniques]
+K[Run-AtomicCampaign.ps1 - Execute Techniques]
 
-    %% ========================
-    %% Defender Response
-    %% ========================
-    L[Defender Telemetry + Detection]
-    M[Attack Disruption Containment]
-    N[User Accounts Disabled]
+L[Defender Telemetry and Detection]
+M[Attack Disruption Containment]
+N[User Accounts Disabled]
 
-    %% ========================
-    %% Optional Deployment
-    %% ========================
-    O[Deploy-AtomicCampaign-MASTER.ps1<br>Optional Campaign Deployment]
+O[Deploy-AtomicCampaign-MASTER.ps1 - Optional Campaign Deployment]
 
-    %% ========================
-    %% Flow Relationships
-    %% ========================
+A --> B --> C --> D --> E --> F
+F --> K
+G --> J --> H --> I --> L
+K --> L --> M --> N
 
-    A --> B --> C --> D --> E --> F
-    F --> K
-    G --> J --> H --> I --> L
-    K --> L --> M --> N
-
-    O -. optional .-> K
+O -. optional .-> K
 ```
-# Autonomous Defense Induced Disruption Lab
-
-Hybrid enterprise lab environment for researching **Autonomous Defense Induced Disruption (ADID)**.  
-This repository provides infrastructure build scripts and step-by-step instructions for recreating a hybrid enterprise environment used to study AI-driven autonomous containment behavior.
 
 ---
 
@@ -142,12 +117,6 @@ It is not intended for production deployment.
 
 # Repository File Map
 
-This repository is organized by functional role to support reproducibility and clarity.
-
----
-
-## Folder Structure
-
 ```
 /autonomous-defense-induced-disruption-lab
 │
@@ -173,7 +142,7 @@ This repository is organized by functional role to support reproducibility and c
 │   └── Routing-Playwright-Through-Tor.md
 │
 ├── artifacts/
-│   └── opw2uvbyv8on4idnrirebi5h7.docx
+│   └── research payloads
 │
 └── docs/
     └── supporting documentation
@@ -181,84 +150,7 @@ This repository is organized by functional role to support reproducibility and c
 
 ---
 
-## Folder Purpose
-
-### scripts/
-Windows-based lab automation and execution logic.
-
-These scripts run inside the hybrid enterprise environment and generate telemetry used for research observation.
-
----
-
-### playwright/
-Browser automation workflows executed by simulation systems.
-
-Defines user interaction behavior inside Microsoft 365 services.
-
----
-
-### attacker/
-External simulation components executed from Kali Linux or other non-domain systems.
-
-Used to generate proxy-routed authentication and mailbox activity.
-
----
-
-### artifacts/
-Research artifacts and payloads used during simulation activity.
-
-Not required for infrastructure setup but used during experiments.
-
----
-
-### docs/
-Human-readable documentation, setup notes, and reference material.
-
----
-
-## Execution Flow by Folder
-
-### Infrastructure and Environment Preparation
-```
-scripts/AddUsers.ps1
-scripts/UserSim_MasterBootstrap.ps1
-scripts/Install-AtomicRedTeam-Multi.ps1
-scripts/Entra-ID-App-Setup-Lab-ROPC-Activator.ps1
-```
-
----
-
-### Windows User Simulation
-```
-scripts/Master_Playwright_Taskcreator2.ps1
-scripts/Run-Playwright.ps1
-scripts/Start-AllPlaywrightTasks-And-Summarize.ps1
-```
-
----
-
-### External Activity Simulation (Kali Linux)
-```
-attacker/OfficeLoginScript.ps1
-playwright/m365-outlook-flow.spec.ts
-attacker/Routing-Playwright-Through-Tor.md
-```
-
----
-
-### Adversarial Technique Execution
-```
-scripts/Run-AtomicCampaign.ps1
-```
-
-Optional automated deployment:
-```
-scripts/Deploy-AtomicCampaign-MASTER.ps1
-```
-
----
-
-## Execution Order Summary
+# Execution Order Summary
 
 1. scripts/AddUsers.ps1  
 2. scripts/UserSim_MasterBootstrap.ps1  
@@ -266,23 +158,11 @@ scripts/Deploy-AtomicCampaign-MASTER.ps1
 4. Configure Entra ID App  
 5. scripts/Master_Playwright_Taskcreator2.ps1  
 6. scripts/Start-AllPlaywrightTasks-And-Summarize.ps1  
-7. attacker/OfficeLoginScript.ps1 (via proxychains)  
+7. attacker/OfficeLoginScript.ps1  
 8. scripts/Run-AtomicCampaign.ps1  
 
 Optional:
 - scripts/Deploy-AtomicCampaign-MASTER.ps1
-
----
-
-## Files That May Be Optional
-
-You may not need the following depending on deployment method:
-
-- Deploy-AtomicCampaign-MASTER.ps1 (only for automated campaign staging)
-
-All other files are part of the core execution chain.
-
----
 
 ---
 
@@ -291,118 +171,108 @@ All other files are part of the core execution chain.
 ```mermaid
 flowchart TD
 
-    %% =====================================
-    %% ENVIRONMENT CONSTRUCTION
-    %% =====================================
-    A[Build Microsoft Enterprise Lab<br>Hyper-V + AD + Windows Clients]
-    B[Replace Default Domain<br>Rejoin All Systems]
-    C[Create Test Users<br>AddUsers.ps1]
-    D[Hybrid Identity Configuration<br>Azure AD Connect + M365 E5]
-    E[Onboard Endpoints to Defender XDR]
+A[Build Microsoft Enterprise Lab]
+B[Replace Default Domain and Rejoin Systems]
+C[Create Test Users]
+D[Configure Hybrid Identity and M365 E5]
+E[Onboard Endpoints to Defender XDR]
 
-    %% =====================================
-    %% BASELINE TELEMETRY GENERATION
-    %% =====================================
-    F[Initialize User Simulation Framework<br>UserSim_MasterBootstrap.ps1]
-    G[Internal User Activity Simulation<br>Playwright Scheduled Tasks]
+F[Initialize User Simulation Framework]
+G[Internal User Activity Simulation]
 
-    %% =====================================
-    %% EXTERNAL IDENTITY SIGNAL GENERATION
-    %% =====================================
-    H[Kali Linux Attacker Environment]
-    I[Proxy-Routed Authentication Activity<br>Tor + Proxychains]
-    J[Automated Mailbox Interaction<br>Playwright]
+H[Kali Linux Attacker Environment]
+I[Proxy Routed Authentication Activity]
+J[Automated Mailbox Interaction]
 
-    %% =====================================
-    %% ADVERSARIAL BEHAVIOR SIMULATION
-    %% =====================================
-    K[Deploy Atomic Red Team]
-    L[Execute Technique Campaigns<br>Run-AtomicCampaign.ps1]
+K[Deploy Atomic Red Team]
+L[Execute Technique Campaigns]
 
-    %% =====================================
-    %% DEFENSIVE RESPONSE
-    %% =====================================
-    M[Defender Telemetry Correlation]
-    N[Risk Escalation Across Identity + Endpoint]
-    O[Attack Disruption Decision Engine]
-    P[Automated Containment Action]
+M[Defender Telemetry Correlation]
+N[Risk Escalation Across Identity and Endpoint]
+O[Attack Disruption Decision Engine]
+P[Automated Containment Action]
 
-    %% =====================================
-    %% EXPERIMENTAL OBSERVATION
-    %% =====================================
-    Q[User Accounts Disabled]
-    R[Operational Impact Observed]
+Q[User Accounts Disabled]
+R[Operational Impact Observed]
 
-    %% =====================================
-    %% ANALYSIS
-    %% =====================================
-    S[Document Detection Chain]
-    T[Analyze Trigger Conditions]
-    U[Identify Autonomous Defense Induced Disruption]
+S[Document Detection Chain]
+T[Analyze Trigger Conditions]
+U[Identify Autonomous Defense Induced Disruption]
 
-    %% =====================================
-    %% FLOW
-    %% =====================================
+A --> B --> C --> D --> E
+E --> F --> G
+G --> M
 
-    A --> B --> C --> D --> E
-    E --> F --> G
-    G --> M
+H --> I --> J --> M
+K --> L --> M
 
-    H --> I --> J --> M
-    K --> L --> M
-
-    M --> N --> O --> P --> Q --> R
-    R --> S --> T --> U
+M --> N --> O --> P --> Q --> R
+R --> S --> T --> U
 ```
+
+---
+
+# ADID Trigger Threshold Model
+
+This diagram represents the **observable decision boundary** that leads to automated containment.
+
 ```mermaid
 flowchart TD
-  %% ============================
-  %% ADID Trigger Threshold Model
-  %% Observable gates from exports
-  %% ============================
 
-  A[Telemetry Inputs\n(What Defender Sees)] --> B{Identity Risk Signals?\n(Precursor Alerts)}
-  A --> C{Endpoint HOK Signals?\n(Precursor Alerts)}
+A[Telemetry Inputs]
 
-  %% Identity precursors
-  B -->|Yes| B1[Identity precursors\n- Anonymous IP / risky sign-in\n- Suspicious sign-in properties\n- Account risk indicators]
-  B -->|No| B0[No identity precursors\n(lower likelihood of ADID trigger)]
+A --> B{Identity Risk Signals}
+A --> C{Endpoint Hands on Keyboard Signals}
 
-  %% Endpoint precursors
-  C -->|Yes| C1[Endpoint precursors\n- Suspicious PowerShell / cmd.exe\n- Credential theft tooling signals\n- Human-operated activity patterns\n- Multi-device activity indicators]
-  C -->|No| C0[No endpoint precursors\n(lower likelihood of ADID trigger)]
+B -->|Yes| D[Identity Risk Indicators]
+C -->|Yes| E[Endpoint Compromise Indicators]
 
-  %% Correlation and incident formation
-  B1 --> D[Cross-domain correlation\n(User + Device + Signals)]
-  C1 --> D
+D --> F[Cross Domain Correlation]
+E --> F
 
-  D --> E{Incident Classification Gate\n("Attack Disruption" incident family?)}
+F --> G{Incident Classified as Attack Disruption}
 
-  %% Threshold boundary
-  E -->|Yes| F[THRESHOLD MET (Observable)\nHigh severity incident + Attack Disruption tag\nKnown attack pattern / HOK compromise family]
-  E -->|No| G[Threshold NOT met\nIncident may exist but not Attack Disruption-labeled]
+G -->|Yes| H[High Severity Attack Disruption Incident]
+G -->|No| I[No Automated Containment]
 
-  %% Automated enforcement
-  F --> H[Automated Actions Execute\n(Seconds–Minutes after incident creation)]
-  H --> H1[Identity enforcement\n- Disable user\n- Require sign-in again\n- Suspend user]
-  H --> H2[Endpoint enforcement\n- Contain user/device\n- Additional containment actions]
+H --> J[Automated Actions Execute]
 
-  %% Propagation
-  H --> I{Propagation Scope}
-  I --> J[All correlated entities\nacross hybrid identity + endpoints]
-  J --> K[Outcome: Enterprise authentication denial\n(Scale irrelevant; impact = 100% of workforce if all users affected)]
+J --> K[Disable User]
+J --> L[Require Sign In Again]
+J --> M[Contain Device or User]
 
-  %% Key thesis point
-  K --> L[Key Finding\nEnforcement is detection-pattern-gated,\nnot volume-gated (users/alerts)\nand not context-aware (role criticality)]
+J --> N[Propagation to Correlated Entities]
 
-  %% Privilege/authority note
-  L --> M[Critical Risk Escalation\nNo inherent protection for authority hierarchy\n(privileged accounts can be disabled)\n→ Control-plane denial possible]
+N --> O[Enterprise Authentication Denial]
 
-  %% Notes for readers
-  subgraph Notes[What this model DOES / DOES NOT claim]
-    N1[DOES claim:\n- Observable gate = Attack Disruption-labeled\n  high-severity incident classification\n- Precursors = identity risk + HOK endpoint signals\n- Actions occur immediately after incident creation\n- Scope propagates to correlated entities]
-    N2[DOES NOT claim:\n- Microsoft's internal confidence score\n- Exact numeric thresholds\n- Proprietary model decision logic]
-  end
+O --> P[Key Finding]
+P --> Q[Pattern Based Enforcement]
+P --> R[Not Volume Based]
+P --> S[Not Context Aware]
 
-  M --> Notes
+S --> T[Privileged Accounts Not Inherently Protected]
+T --> U[Control Plane Denial Possible]
 ```
+
+---
+
+# Key Research Finding
+
+Autonomous containment is triggered by **high-confidence incident classification**, not organizational context.
+
+Enforcement scope propagates to all correlated entities, including privileged accounts.
+
+This enables **Autonomous Defense Induced Disruption (ADID)** — operational denial caused by legitimate defensive automation.
+
+---
+
+# License
+
+See LICENSE file.
+
+---
+
+# Disclaimer
+
+This repository is for controlled research and educational use only.  
+Do not deploy in production environments.
