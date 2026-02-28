@@ -53,6 +53,10 @@ This lab was designed to:
 - Reproduce enterprise conditions required to test Attack Disruption scenarios  
 
 ---
+## Experimental Design Overview
+This laboratory evaluates autonomous containment decision boundaries in hybrid enterprise environments.
+For detailed methodology, variables, measurement model, and limitations, see:
+docs/EXPERIMENTAL_DESIGN.md
 
 ## What the Lab Framework Provides
 
