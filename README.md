@@ -60,7 +60,7 @@ To evaluate whether autonomous containment systems:
 
 Detailed methodology is documented in:
 
-`docs/EXPERIMENTAL_DESIGN.md`
+`docs_Other/EXPERIMENTAL_DESIGN.md`
 
 At a high level, the experiment:
 
