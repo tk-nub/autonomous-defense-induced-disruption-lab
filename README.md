@@ -14,6 +14,16 @@ Modern security platforms increasingly implement automated containment capabilit
 
 This lab evaluates that question under controlled conditions.
 
+### Tool Independence of ADID Triggers
+
+This research used controlled telemetry generation to evaluate autonomous containment behavior. Atomic Red Team was employed solely as a deterministic mechanism for producing ATT&CK-aligned activity required to observe incident classification and enforcement boundaries.
+
+Containment actions were not triggered by identification of Atomic Red Team itself, but by correlated identity and endpoint signals consistent with high-confidence compromise classification.
+
+Accordingly, ADID is not dependent on any specific testing framework. Any adversary activity capable of generating equivalent compromise telemetry may produce similar containment outcomes under comparable configuration conditions.
+
+This repository evaluates structural properties of detection-driven autonomous enforcement rather than tool-specific behavior.
+
 ---
 
 # 2. Autonomous Defense Induced Disruption (ADID)
