@@ -298,6 +298,30 @@ T --> U[Control Plane Denial Possible]
 ```
 
 ---
+---
+
+## ADID Taxonomy Classification
+
+The following taxonomy classifies Autonomous Defense Induced Disruption (ADID) within established cybersecurity and system behavior categories.
+
+| Classification Dimension | ADID Characterization | Explanation |
+|--------------------------|----------------------|-------------|
+| Threat Category | Defensive-System-Induced Disruption | Disruption originates from legitimate automated defensive actions rather than direct attacker persistence. |
+| Root Cause | Detection-Threshold Enforcement | Triggered when autonomous systems classify high-confidence compromise conditions. |
+| Control Plane Impact | Identity and Access Control Disruption | Enforcement actions affect authentication, authorization, and session control mechanisms. |
+| Operational Impact Type | Availability Degradation or Denial | Users and services lose access due to automated containment. |
+| Attack Dependency | No Full System Compromise Required | ADID can occur without attacker control over infrastructure resources. |
+| Automation Model | Artificial Narrow Intelligence (ANI) | Operates within rule-bound, detection-driven decision logic. |
+| Decision Boundary | Incident-Level Classification | Enforcement gated by high-confidence incident labeling (e.g., Attack Disruption). |
+| Context Awareness | Organizational Context Blind | System does not evaluate role criticality, business impact, or recovery hierarchy. |
+| Propagation Scope | Correlated Entity Expansion | Containment extends across linked users, devices, and hybrid identity layers. |
+| Escalation Risk | Control-Plane Denial Possible | Privileged or administrative accounts may be disabled, impairing recovery. |
+| Exploit Vector | Pattern Triggering | Adversary activity intentionally matches detection logic to induce enforcement. |
+| Distinction from DoS | Defensive Logic Abuse | Unlike traditional DoS, disruption results from autonomous defensive mechanisms, not resource exhaustion. |
+| Governance Requirement | Mandatory Guardrails Recommended | Requires exclusion rules, privilege protection, and break-glass recovery controls. |
+| Generalization Scope | Cross-Platform Autonomous Systems | Applicable to any security platform implementing automated containment based on high-confidence classification. |
+
+---
 
 # Key Research Finding
 
