@@ -213,7 +213,7 @@ R --> S --> T --> U
 ---
 ---
 
-## 📦 Autonomous Defense Induced Disruption (ADID)
+## Autonomous Defense Induced Disruption (ADID)
 
 **Autonomous Defense Induced Disruption (ADID)** is a condition in which automated cybersecurity response mechanisms execute legitimate containment actions that unintentionally or intentionally disrupt normal organizational operations.
 
