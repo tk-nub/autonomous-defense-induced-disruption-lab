@@ -211,7 +211,50 @@ R --> S --> T --> U
 ```
 
 ---
+---
 
+## 📦 Autonomous Defense Induced Disruption (ADID)
+
+**Autonomous Defense Induced Disruption (ADID)** is a condition in which automated cybersecurity response mechanisms execute legitimate containment actions that unintentionally or intentionally disrupt normal organizational operations.
+
+### Formal Definition
+ADID occurs when an autonomous security system, operating on detection-driven decision logic, enforces protective controls — such as identity disablement, device containment, or access restriction — in a way that produces operational denial **without requiring attacker control of enterprise systems**.
+
+### Core Characteristics
+
+- **Detection-driven enforcement**  
+  Actions are triggered by threat confidence thresholds rather than organizational context.
+
+- **Legitimate defensive behavior**  
+  The system operates exactly as designed; no system compromise or malfunction is required.
+
+- **Propagation across correlated entities**  
+  Containment actions extend across identities, devices, or infrastructure linked by telemetry.
+
+- **Lack of organizational context awareness**  
+  Role criticality, privilege hierarchy, and operational dependency are not evaluated during enforcement.
+
+- **Potential control-plane disruption**  
+  Administrative or privileged accounts may be restricted, impairing recovery capability.
+
+### Mechanism
+
+1. Telemetry produces indicators consistent with compromise.  
+2. The autonomous system classifies a high-confidence incident.  
+3. Automated containment is executed.  
+4. Enforcement propagates across correlated entities.  
+5. Organizational availability is degraded or denied.
+
+### Distinguishing Feature
+
+ADID is not caused by attacker persistence or system takeover.  
+It results from **autonomous defensive enforcement operating without full organizational awareness**.
+
+### Risk Implication
+
+As autonomous response capabilities expand across security platforms, ADID represents a structural resilience risk in which protective mechanisms can become vectors of enterprise disruption if not governed by contextual safeguards.
+
+---
 # ADID Trigger Threshold Model
 
 This diagram represents the **observable decision boundary** that leads to automated containment.
