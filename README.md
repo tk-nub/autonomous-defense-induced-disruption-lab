@@ -30,7 +30,7 @@ This repository evaluates structural properties of detection-driven autonomous e
 
 ## Formal Definition
 
-Autonomous Defense Induced Disruption (ADID) is a condition in which automated cybersecurity response mechanisms execute legitimate containment actions that disrupt normal organizational operations without requiring attacker control over enterprise infrastructure.
+Autonomous Defense Induced Disruption (ADID) is defined as a condition in which autonomous response measures are triggered to perform legitimate containment actions, resulting in systemic operational disruption, including loss of administrative access.
 
 ## Core Characteristics
 
